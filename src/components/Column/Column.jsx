@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
 import {
   ColumnContainer,
   ColumnTitle,
   TaskList,
-  ColumnHandle,
   FunctionButtonsContainer,
   FunctionButtonsInnerContainer,
   FunctionButton,
@@ -20,6 +20,7 @@ const Column = (props) => {
     isEditValue: false,
     clickedColumn: null,
   });
+  const history = useHistory();
 
   const editColumnHandler = (id) => {
     setIsEdit({
@@ -32,18 +33,33 @@ const Column = (props) => {
     setTitle(event.target.value);
   };
 
+  const calculateAverage = () => {
+    let sum = 0;
+    for (let i = 0; i < props.tasks.length; i++) {
+      sum +=
+        parseInt(props.tasks[i].estimatedTime.hours * 60) +
+        parseInt(props.tasks[i].estimatedTime.minutes);
+    }
+
+    let avg = sum / props.tasks.length;
+    return avg.toFixed(2);
+  };
+
   return (
     <Draggable draggableId={props.column.id} index={props.index}>
       {(provided) => (
         <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
           {!isEdit.isEditValue && !isEdit.clickedColumn ? (
             <ColumnTitle {...provided.dragHandleProps}>
-              <ColumnHandle />
-              {props.column.title}
+              {props.column.title} -{" "}
+              {props.tasks.length === 1
+                ? `${props.tasks.length} Task`
+                : `${props.tasks.length} Tasks`}{" "}
+              {props.tasks.length > 0 &&
+                `- Average Time: ${calculateAverage()} min`}
             </ColumnTitle>
           ) : (
             <ColumnTitle {...provided.dragHandleProps}>
-              <ColumnHandle />
               <Input
                 id="update-column"
                 name="updateColumn"
@@ -102,6 +118,13 @@ const Column = (props) => {
               </TaskList>
             )}
           </Droppable>
+          <FunctionButton
+            onClick={() =>
+              history.push({ pathname: "/create-task", state: props.column.id })
+            }
+          >
+            CREATE TASK
+          </FunctionButton>
         </ColumnContainer>
       )}
     </Draggable>

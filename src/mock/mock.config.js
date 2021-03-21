@@ -2,7 +2,6 @@ import MockAdapter from "axios-mock-adapter";
 
 import initialData from "../shared/initial-data";
 
-let columnsList = initialData.columns;
 let tasksList = initialData.tasks;
 
 export const isMockEnabled = () => {
@@ -57,8 +56,21 @@ export const removeColumn = (config) => {
 
 export const addTask = (config) => {
   const task = JSON.parse(config.data);
-  tasksList.push(task);
-  return [200, task];
+  let newColumns = initialData;
+  newColumns.tasks[task.title] = {
+    id: task.title,
+    title: task.title,
+    content: task.content,
+    estimatedTime: {
+      hours: task.hours,
+      minutes: task.minutes,
+    },
+    priority: task.priority,
+  };
+  newColumns.columns[task.columnId].taskIds = newColumns.columns[
+    task.columnId
+  ].taskIds.concat(task.title);
+  return [200, newColumns];
 };
 
 export const editTask = (config) => {

@@ -1,7 +1,15 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 
-import { TaskContainer, TaskHandle } from "../../shared/styled-stylesheet";
+import {
+  TaskContainer,
+  TaskTitle,
+  TaskContent,
+  TaskEstimatedTime,
+  TaskPriority,
+  FunctionButton,
+  FunctionButtonsInnerContainer,
+} from "../../shared/styled-stylesheet";
 
 const Task = (props) => {
   return (
@@ -13,8 +21,20 @@ const Task = (props) => {
           ref={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          <TaskHandle />
-          {props.task.content}
+          <TaskTitle>{props.task.title}</TaskTitle>
+          <TaskContent>{props.task.content}</TaskContent>
+          <TaskEstimatedTime>
+            Estimated Time:{" "}
+            {props.task.estimatedTime.hours +
+              ":" +
+              props.task.estimatedTime.minutes +
+              ""}
+          </TaskEstimatedTime>
+          <TaskPriority>Priority: {props.task.priority}</TaskPriority>
+          <FunctionButtonsInnerContainer>
+            <FunctionButton>DELETE</FunctionButton>
+            <FunctionButton>EDIT</FunctionButton>
+          </FunctionButtonsInnerContainer>
         </TaskContainer>
       )}
     </Draggable>

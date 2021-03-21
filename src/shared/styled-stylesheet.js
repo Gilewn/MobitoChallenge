@@ -137,7 +137,7 @@ export const ColumnContainer = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
-  width: 220px;
+  width: 240px;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -150,14 +150,6 @@ export const ColumnTitle = styled.h3`
   align-items: center;
 `;
 
-export const ColumnHandle = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: #182a33;
-  borderradius: 4px;
-  margin-right: 8px;
-`;
-
 export const TaskContainer = styled.div`
   border: 1px solid lightgrey;
   border-radius: 2px;
@@ -166,6 +158,8 @@ export const TaskContainer = styled.div`
   background-color: ${(props) => (props.isDragging ? "#777" : "#fff")};
   color: ${(props) => (props.isDragging ? "#fff" : "#182a33")};
   display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const TaskList = styled.div`
@@ -176,12 +170,21 @@ export const TaskList = styled.div`
   min-height: 100px;
 `;
 
-export const TaskHandle = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: #54f1eb;
-  border-radius: 50%;
-  margin-right: 8px;
+export const TaskTitle = styled.h4`
+  margin: auto;
+`;
+
+export const TaskContent = styled.p`
+  margin: 2px;
+  text-align: center;
+`;
+
+export const TaskEstimatedTime = styled.p`
+  margin: 2px;
+`;
+
+export const TaskPriority = styled.p`
+  margin: 2px;
 `;
 
 export const InputContainer = styled.div`
@@ -198,7 +201,7 @@ export const CreateColumnTitle = styled.h1`
 `;
 
 export const Input = styled.input`
-  width: 50%;
+  width: ${(props) => (props.full ? "100%" : "50%")};
   font: inherit;
   border: 1px solid #ccc;
   background: #f8f8f8;
@@ -218,7 +221,6 @@ export const SubmitButton = styled.button`
   background: #182a33;
   color: white;
   cursor: pointer;
-  margin-right: 1rem;
   text-decoration: none;
   display: inline-block;
   &:hover {
@@ -236,6 +238,38 @@ export const SubmitButton = styled.button`
   }
 `;
 
-export const DeleteColumnButton = styled.button`
-  
+export const FunctionButtonsContainer = styled.div`
+  text-align: center;
+`;
+
+export const FunctionButtonsInnerContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+export const FunctionButton = styled.button`
+  font: inherit;
+  height: 40px;
+  margin: 2px;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid #182a33;
+  border-radius: 4px;
+  background: ${(props) => (props.disabled ? "#ccc" : "#182a33")};
+  color: ${(props) => (props.disabled ? "#182a33" : "#fff")};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  text-decoration: none;
+  display: inline-block;
+  &:hover {
+    background: ${(props) => (props.disabled ? "#ccc" : "#54f1eb")};
+    border-color: #54f1eb;
+    color: #182a33;
+  }
+  &:active {
+    background: #54f1eb;
+    border-color: #54f1eb;
+    color: #182a33;
+  }
+  &:focus {
+    outline: none;
+  }
 `;

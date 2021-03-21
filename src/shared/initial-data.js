@@ -1,16 +1,41 @@
 const initialData = {
   tasks: {
-    "task-1": { id: "task-1", content: "Do the project" },
-    "task-2": { id: "task-2", content: "Do it right" },
-    "task-3": { id: "task-3", content: "Do it concentraded" },
-    "task-4": { id: "task-4", content: "Do it" },
-    "task-5": { id: "task-5", content: "Just do it!" },
+    "task-1": {
+      id: "task-1",
+      title: "Wash the car",
+      content: "I will wash the car well tomorrow at noon",
+      estimatedTime: {
+        hours: "2",
+        minutes: "30",
+      },
+      priority: 2,
+    },
+    "task-2": {
+      id: "task-2",
+      title: "Supermarket",
+      content: "I have to buy vegetables",
+      estimatedTime: {
+        hours: "1",
+        minutes: "10",
+      },
+      priority: 1,
+    },
+    "task-3": {
+      id: "task-3",
+      title: "Running",
+      content: "Tomorrow I will go for a run on the football field",
+      estimatedTime: {
+        hours: "0",
+        minutes: "45",
+      },
+      priority: 3,
+    },
   },
   columns: {
     "column-1": {
       id: "column-1",
-      title: "To do",
-      taskIds: ["task-1", "task-2", "task-3", "task-4"],
+      title: "To Do",
+      taskIds: ["task-1", "task-2", "task-3"],
     },
     "column-2": {
       id: "column-2",
