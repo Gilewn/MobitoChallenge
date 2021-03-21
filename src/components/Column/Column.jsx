@@ -10,6 +10,7 @@ import {
   FunctionButtonsInnerContainer,
   FunctionButton,
   Input,
+  ErrorMessage,
 } from "../../shared/styled-stylesheet";
 
 import Task from "../Task/Task";
@@ -20,6 +21,7 @@ const Column = (props) => {
     isEditValue: false,
     clickedColumn: null,
   });
+  const [isValid, setIsValid] = useState(true);
   const history = useHistory();
 
   const editColumnHandler = (id) => {
@@ -30,6 +32,12 @@ const Column = (props) => {
   };
 
   const changeTitleHandler = (event) => {
+    if (event.target.value === "") {
+      setIsValid(false);
+      return;
+    } else {
+      setIsValid(true);
+    }
     setTitle(event.target.value);
   };
 
@@ -49,6 +57,7 @@ const Column = (props) => {
     <Draggable draggableId={props.column.id} index={props.index}>
       {(provided) => (
         <ColumnContainer {...provided.draggableProps} ref={provided.innerRef}>
+          {!isValid && <ErrorMessage>Please enter a title</ErrorMessage>}
           {!isEdit.isEditValue && !isEdit.clickedColumn ? (
             <ColumnTitle {...provided.dragHandleProps}>
               {props.column.title} -{" "}
@@ -112,7 +121,14 @@ const Column = (props) => {
                 isDraggingOver={snapshot.isDraggingOver}
               >
                 {props.tasks.map((task, index) => (
-                  <Task key={task.id} task={task} index={index} />
+                  <Task
+                    key={task.id}
+                    task={task}
+                    index={index}
+                    columnId={props.column.id}
+                    onTaskDelete={props.onTaskDelete}
+                    onTaskUpdate={props.onTaskUpdate}
+                  />
                 ))}
                 {provided.placeholder}
               </TaskList>

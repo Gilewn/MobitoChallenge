@@ -2,7 +2,9 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
-export const MainContainer = styled.div``;
+export const MainContainer = styled.div`
+  text-align: center;
+`;
 
 export const MainHeaderContainer = styled.header`
   height: 4rem;
@@ -131,6 +133,10 @@ export const MainNavigationListItems = styled.li`
 export const DnDContainer = styled.div`
   display: flex;
   justify-content: center;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const ColumnContainer = styled.div`
@@ -160,6 +166,10 @@ export const TaskContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+export const TaskInnerContainer = styled.div`
+  text-align: center;
 `;
 
 export const TaskList = styled.div`
@@ -272,4 +282,9 @@ export const FunctionButton = styled.button`
   &:focus {
     outline: none;
   }
+`;
+
+export const ErrorMessage = styled.h3`
+  color: red;
+  text-align: center;
 `;

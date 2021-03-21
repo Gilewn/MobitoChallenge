@@ -6,6 +6,7 @@ import { getColumnWithTasks } from "../../shared/tasks-http-service";
 import { removeColumn, updateColumn } from "../../shared/colums-http-service";
 
 import Column from "../../components/Column/Column";
+import LoadingSpinner from "../../components/Loading/LoadingSpinner";
 
 const DragAndDrop = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -48,6 +49,14 @@ const DragAndDrop = (props) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const deleteTaskHandler = (data) => {
+    setInitialState(data);
+  };
+
+  const updateTaskHandler = (data) => {
+    setInitialState(data);
   };
 
   const onDragStart = () => {
@@ -147,11 +156,7 @@ const DragAndDrop = (props) => {
   };
 
   if (isLoading) {
-    return (
-      <div className="center">
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
@@ -178,6 +183,8 @@ const DragAndDrop = (props) => {
                   onDelete={deleteColumnHandler}
                   onUpdate={updateColumnHandler}
                   updated={isEditCompleted}
+                  onTaskDelete={deleteTaskHandler}
+                  onTaskUpdate={updateTaskHandler}
                 />
               );
             })}

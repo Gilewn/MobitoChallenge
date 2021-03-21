@@ -7,10 +7,12 @@ import {
   CreateColumnTitle,
   Input,
   SubmitButton,
+  ErrorMessage,
 } from "../../shared/styled-stylesheet";
 
 const CreateColumn = () => {
   const [title, setTitle] = useState("");
+  const [isValid, setIsValid] = useState(true);
   const history = useHistory();
 
   const changeTitleHandler = (event) => {
@@ -18,6 +20,10 @@ const CreateColumn = () => {
   };
 
   const createColumnHandler = () => {
+    if (title === "") {
+      setIsValid(false);
+      return;
+    }
     createColumn(title).then((res) => {
       history.push({ pathname: "/", state: res.data });
     });
@@ -28,6 +34,7 @@ const CreateColumn = () => {
       <CreateColumnTitle>
         Please enter the title of the new column
       </CreateColumnTitle>
+      {!isValid && <ErrorMessage>Please enter a title</ErrorMessage>}
       <Input
         id="create-column"
         name="createColumn"

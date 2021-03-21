@@ -2,8 +2,6 @@ import MockAdapter from "axios-mock-adapter";
 
 import initialData from "../shared/initial-data";
 
-let tasksList = initialData.tasks;
-
 export const isMockEnabled = () => {
   return process.env.REACT_APP_MOCK_ENABLED === "true";
 };
@@ -15,8 +13,8 @@ export const initializeAxiosMockAdapter = (instance) => {
   mock.onPut(/\/columns\/\w+/).reply((config) => editColumn(config));
   mock.onDelete(/\/columns\/\w+/).reply((config) => removeColumn(config));
   mock.onPost("/tasks").reply((config) => addTask(config));
-  mock.onPut(/\/tasks\/\d+/).reply((config) => editTask(config));
-  mock.onDelete(/\/tasks\/\d+/).reply((config) => removeTask(config));
+  mock.onPut(/\/tasks\/\w+/).reply((config) => editTask(config));
+  mock.onPut(/\/task\/\w+/).reply((config) => removeTask(config));
 };
 
 export const getColumnsWithTasks = () => {
@@ -75,16 +73,35 @@ export const addTask = (config) => {
 
 export const editTask = (config) => {
   const id = extractIdPathParamFromUrl(config);
-  const taskIndex = tasksList.findIndex((c) => c.id === id);
   const task = JSON.parse(config.data);
-  tasksList[taskIndex] = task;
-  return [200, task];
+  const newColumns = {
+    ...initialData,
+    tasks: {
+      ...initialData.tasks,
+      [id]: {
+        id: id,
+        title: task.title,
+        content: task.content,
+        estimatedTime: {
+          hours: task.hours,
+          minutes: task.minutes,
+        },
+        priority: task.priority,
+      },
+    },
+  };
+  return [200, newColumns];
 };
 
 export const removeTask = (config) => {
   const id = extractIdPathParamFromUrl(config);
-  tasksList = tasksList.filter((c) => c.id !== id);
-  return [204, null];
+  const column = config.data;
+  let newColumns = initialData;
+  delete newColumns.tasks[id];
+  newColumns.columns[column].taskIds = newColumns.columns[
+    column
+  ].taskIds.filter((taskId) => taskId !== id);
+  return [204, newColumns];
 };
 
 const extractIdPathParamFromUrl = (config) => {

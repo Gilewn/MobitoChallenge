@@ -7,6 +7,7 @@ import {
   CreateColumnTitle,
   Input,
   SubmitButton,
+  ErrorMessage,
 } from "../../shared/styled-stylesheet";
 
 const CreateTask = (props) => {
@@ -17,6 +18,7 @@ const CreateTask = (props) => {
     minutes: "",
     priority: "",
   });
+  const [isValid, setIsValid] = useState(true);
   const columnId = props.location.state;
   const history = useHistory();
 
@@ -26,6 +28,12 @@ const CreateTask = (props) => {
 
   const createTaskHandler = () => {
     taskData.columnId = columnId;
+    for (let input in taskData) {
+      if (taskData[input].length < 1) {
+        setIsValid(false);
+        return;
+      }
+    }
     createTask(taskData).then((res) => {
       history.push({ pathname: "/", state: res.data });
     });
@@ -34,6 +42,7 @@ const CreateTask = (props) => {
   return (
     <InputContainer>
       <CreateColumnTitle>New Task</CreateColumnTitle>
+      {!isValid && <ErrorMessage>All fields are required</ErrorMessage>}
       <Input
         id="task-title"
         name="title"

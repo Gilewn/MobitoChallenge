@@ -12,6 +12,6 @@ export const updateTask = (id, data) => {
   return http.put(`/tasks/${id}`, data);
 };
 
-export const removeTask = (id) => {
-  return http.delete(`/tasks/${id}`);
+export const removeTask = (id, columnId) => {
+  return http.put(`/task/${id}`, columnId);
 };
