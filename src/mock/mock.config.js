@@ -13,7 +13,7 @@ export const initializeAxiosMockAdapter = (instance) => {
   const mock = new MockAdapter(instance);
   mock.onGet("/columns-with-tasks").reply(() => getColumnsWithTasks());
   mock.onPost("/columns").reply((config) => addColumn(config));
-  mock.onPut(/\/columns\/\d+/).reply((config) => editColumn(config));
+  mock.onPut(/\/columns\/\w+/).reply((config) => editColumn(config));
   mock.onDelete(/\/columns\/\w+/).reply((config) => removeColumn(config));
   mock.onPost("/tasks").reply((config) => addTask(config));
   mock.onPut(/\/tasks\/\d+/).reply((config) => editTask(config));
@@ -22,12 +22,6 @@ export const initializeAxiosMockAdapter = (instance) => {
 
 export const getColumnsWithTasks = () => {
   return [200, initialData];
-};
-
-export const getColumn = (config) => {
-  const id = extractIdPathParamFromUrl(config);
-  const column = columnsList.find((c) => c.id === id);
-  return [200, column];
 };
 
 export const addColumn = (config) => {
@@ -40,10 +34,15 @@ export const addColumn = (config) => {
 
 export const editColumn = (config) => {
   const id = extractIdPathParamFromUrl(config);
-  const columnIndex = columnsList.findIndex((c) => c.id === id);
-  const column = JSON.parse(config.data);
-  columnsList[columnIndex] = column;
-  return [200, column];
+  const column = config.data;
+  const newColumns = {
+    ...initialData,
+    columns: {
+      ...initialData.columns,
+      [id]: { id: id, title: column, taskIds: [] },
+    },
+  };
+  return [200, newColumns];
 };
 
 export const removeColumn = (config) => {

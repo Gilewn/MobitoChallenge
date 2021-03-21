@@ -3,13 +3,14 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import { DnDContainer } from "../../shared/styled-stylesheet";
 import { getColumnWithTasks } from "../../shared/tasks-http-service";
-import { removeColumn } from "../../shared/colums-http-service";
+import { removeColumn, updateColumn } from "../../shared/colums-http-service";
 
 import Column from "../../components/Column/Column";
 
 const DragAndDrop = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [initialState, setInitialState] = useState();
+  const [isEditCompleted, setIsEditCompleted] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -17,17 +18,36 @@ const DragAndDrop = (props) => {
       setInitialState(props.location.state);
       setIsLoading(false);
     } else {
-      getColumnWithTasks().then((res) => {
-        setInitialState(res.data);
-        setIsLoading(false);
-      });
+      getColumnWithTasks()
+        .then((res) => {
+          setInitialState(res.data);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [setInitialState, setIsLoading, props.location.state]);
 
   const deleteColumnHandler = (columnId) => {
-    removeColumn(columnId).then((res) => {
-      setInitialState(res.data);
-    });
+    removeColumn(columnId)
+      .then((res) => {
+        setInitialState(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const updateColumnHandler = (columnId, data) => {
+    updateColumn(columnId, data)
+      .then((res) => {
+        setInitialState(res.data);
+        setIsEditCompleted(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onDragStart = () => {
@@ -156,6 +176,8 @@ const DragAndDrop = (props) => {
                   tasks={tasks}
                   index={index}
                   onDelete={deleteColumnHandler}
+                  onUpdate={updateColumnHandler}
+                  updated={isEditCompleted}
                 />
               );
             })}

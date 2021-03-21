@@ -1,9 +1,5 @@
 import { http } from "./http";
 
-export const getColumn = (id) => {
-  return http.get(`/columns/${id}`);
-};
-
 export const createColumn = (data) => {
   return http.post("/columns", data);
 };
