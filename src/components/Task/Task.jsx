@@ -16,7 +16,7 @@ import {
   ErrorMessage,
 } from "../../shared/styled-stylesheet";
 
-import LoadingSpinner from "../../components/Loading/LoadingSpinner";
+import LoadingSpinner from "../../components/UIElements/Loading/LoadingSpinner";
 
 const Task = (props) => {
   const [isLoading, setIsLoading] = useState(false);

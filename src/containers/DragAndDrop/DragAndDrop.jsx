@@ -6,7 +6,7 @@ import { getColumnWithTasks } from "../../shared/tasks-http-service";
 import { removeColumn, updateColumn } from "../../shared/colums-http-service";
 
 import Column from "../../components/Column/Column";
-import LoadingSpinner from "../../components/Loading/LoadingSpinner";
+import LoadingSpinner from "../../components/UIElements/Loading/LoadingSpinner";
 
 const DragAndDrop = (props) => {
   const [isLoading, setIsLoading] = useState(true);

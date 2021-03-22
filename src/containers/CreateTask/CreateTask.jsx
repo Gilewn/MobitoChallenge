@@ -10,7 +10,7 @@ import {
   ErrorMessage,
 } from "../../shared/styled-stylesheet";
 
-import LoadingSpinner from "../../components/Loading/LoadingSpinner";
+import LoadingSpinner from "../../components/UIElements/Loading/LoadingSpinner";
 
 const CreateTask = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +30,7 @@ const CreateTask = (props) => {
   };
 
   const createTaskHandler = () => {
+    setIsLoading(true);
     taskData.columnId = columnId;
     for (let input in taskData) {
       if (taskData[input].length < 1) {
@@ -38,6 +39,7 @@ const CreateTask = (props) => {
       }
     }
     createTask(taskData).then((res) => {
+      setIsLoading(false);
       history.push({ pathname: "/", state: res.data });
     });
   };
