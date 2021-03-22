@@ -10,7 +10,10 @@ import {
   ErrorMessage,
 } from "../../shared/styled-stylesheet";
 
+import LoadingSpinner from "../../components/Loading/LoadingSpinner";
+
 const CreateColumn = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [isValid, setIsValid] = useState(true);
   const history = useHistory();
@@ -24,12 +27,16 @@ const CreateColumn = () => {
       setIsValid(false);
       return;
     }
+    setIsLoading(true);
     createColumn(title).then((res) => {
+      setIsLoading(false);
       history.push({ pathname: "/", state: res.data });
     });
   };
 
-  return (
+  return isLoading ? (
+    <LoadingSpinner />
+  ) : (
     <InputContainer>
       <CreateColumnTitle>
         Please enter the title of the new column
@@ -42,6 +49,7 @@ const CreateColumn = () => {
         placeholder="Please enter title"
         value={title}
         onChange={changeTitleHandler}
+        required
       />
       <SubmitButton onClick={createColumnHandler}>CREATE</SubmitButton>
     </InputContainer>

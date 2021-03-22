@@ -77,6 +77,7 @@ const Column = (props) => {
                 value={title}
                 onChange={changeTitleHandler}
                 full
+                required
               />
             </ColumnTitle>
           )}

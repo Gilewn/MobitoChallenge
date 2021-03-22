@@ -31,23 +31,29 @@ const DragAndDrop = (props) => {
   }, [setInitialState, setIsLoading, props.location.state]);
 
   const deleteColumnHandler = (columnId) => {
+    setIsLoading(true);
     removeColumn(columnId)
       .then((res) => {
         setInitialState(res.data);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 
   const updateColumnHandler = (columnId, data) => {
+    setIsLoading(true);
     updateColumn(columnId, data)
       .then((res) => {
         setInitialState(res.data);
         setIsEditCompleted(true);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 

@@ -10,7 +10,10 @@ import {
   ErrorMessage,
 } from "../../shared/styled-stylesheet";
 
+import LoadingSpinner from "../../components/Loading/LoadingSpinner";
+
 const CreateTask = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [taskData, setTaskData] = useState({
     title: "",
     content: "",
@@ -39,7 +42,9 @@ const CreateTask = (props) => {
     });
   };
 
-  return (
+  return isLoading ? (
+    <LoadingSpinner />
+  ) : (
     <InputContainer>
       <CreateColumnTitle>New Task</CreateColumnTitle>
       {!isValid && <ErrorMessage>All fields are required</ErrorMessage>}
@@ -52,6 +57,7 @@ const CreateTask = (props) => {
         onChange={(event) =>
           changeTaskDataHandler(event.target.value, event.target.name)
         }
+        required
       />
       <Input
         id="task-content"
@@ -62,6 +68,7 @@ const CreateTask = (props) => {
         onChange={(event) =>
           changeTaskDataHandler(event.target.value, event.target.name)
         }
+        required
       />
       <Input
         id="task-estimated-time"
@@ -72,16 +79,20 @@ const CreateTask = (props) => {
         onChange={(event) =>
           changeTaskDataHandler(event.target.value, event.target.name)
         }
+        min="0"
+        max="23"
       />
       <Input
         id="task-estimated-time"
         name="minutes"
         type="number"
-        placeholder="Please enter estimated hours"
+        placeholder="Please enter estimated minutes"
         value={taskData.minutes}
         onChange={(event) =>
           changeTaskDataHandler(event.target.value, event.target.name)
         }
+        min="0"
+        max="59"
       />
       <Input
         id="task-priority"
@@ -92,6 +103,8 @@ const CreateTask = (props) => {
         onChange={(event) =>
           changeTaskDataHandler(event.target.value, event.target.name)
         }
+        min="0"
+        max="5"
       />
       <SubmitButton onClick={createTaskHandler}>CREATE</SubmitButton>
     </InputContainer>
